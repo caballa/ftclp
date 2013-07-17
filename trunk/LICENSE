@@ -1,0 +1,24 @@
+
+ftclp has been written by Jorge A. Navas
+(C)The University of Melbourne 2013. 
+
+Licenses
+----------
+
+Read http://ciao-lang.org/license.html for Ciao license conditions.
+
+Read http://mathsat.fbk.eu/download.html for MathSAT license
+conditions.
+
+Acknowledgements
+-----------------
+
+ftclp uses code freely provided by generous people:
+
+- crit-bit trees for strings written in C by Jonas Gehring
+  <jonas@jgehring.net>.
+
+- balanced tree and union-find written in Prolog by J. Gallagher (c)
+  Roskilde University.
+
+
