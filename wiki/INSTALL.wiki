@@ -86,6 +86,6 @@ Failure Tabled Constraint Logic Programming by Interpolation
 
 ===Common Configurations===
 
-# Standard CLP without tabling: run without options
-# Failure-Tabling CLP: run with options -clause-pruning -unscoped-intp
-# Failure-Tabling CLP with special treatment for infinite derivations: run with options -clause-pruning -unscoped-intp -infinite-pruning
+  # Standard CLP without tabling: run without options
+  # Failure-Tabling CLP: run with options -clause-pruning -unscoped-intp
+  # Failure-Tabling CLP with special treatment for infinite derivations: run with options -clause-pruning -unscoped-intp -infinite-pruning
