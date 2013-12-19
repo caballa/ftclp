@@ -1,11 +1,10 @@
 =Install And Usage=
 
-This guide is only Linux and it has only been tested with Ubuntu 12.04 on a 64-bit machine.
+This guide is only for Linux OS and it has only been tested with Ubuntu 12.04 on a 64-bit machine.
 
-==REQUIREMENTS==
+==Requirements==
 
-* If your OS is linux 64 bits, then you need to install the 32-bit
-  libraries:
+  If your OS is linux 64 bits, then you need to install the 32-bit libraries:
 
   For Ubuntu:
        sudo apt-get install ia32-libs libc6-i386 libc6-dev-i386 lib32gcc1 
@@ -16,7 +15,7 @@ This guide is only Linux and it has only been tested with Ubuntu 12.04 on a 64-b
 
 
 
-==SETUP==
+==Setup==
 
 The distribution comes as a compressed tarball named
 ftclp.xx.yy.tar.gz, where xx.yy is a version number. Unpack the
@@ -49,7 +48,7 @@ make all
 This will compile all the files and will generate the executable file
 ftclp.xx.yy in the bin directory.
 
-==USAGE==
+==Usage==
 
 {{{
 ftclp.xx.yy -help
