@@ -84,7 +84,7 @@ Failure Tabled Constraint Logic Programming by Interpolation
     -disjunctive-intp   : build fully disjunctive interpolants
 }}}
 
-===Common Configurations===
+===Common Usage Configurations===
 
   # Standard CLP without tabling: run without options
   # Failure-Tabling CLP: run with options -clause-pruning -unscoped-intp
