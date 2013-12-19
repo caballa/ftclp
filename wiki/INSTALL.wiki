@@ -52,4 +52,40 @@ ftclp.xx.yy in the bin directory.
 
 {{{
 ftclp.xx.yy -help
+
+Failure Tabled Constraint Logic Programming by Interpolation
+         by G. Gange, J.A. Navas, P. Schachte, H. Sondergaard, and P.J. Stuckey.
+         (C)2013 The University of Melbourne.
+  Description: CLP interpreter with failure-based tabling.
+
+  Usage: cmmd -goal <G> -f  <input_file> [options] 
+         G must be a single CLP term between single quotes (e.g., 'foo(X)') 
+         For multiple goals G1,...,Gn wrap them into a predicate 
+         wrap(...) :- G1,...,Gn. and call with -goal 'wrap(...)'
+
+  Options: 
+    -help               : display this list of options
+    -debug              : debug mode
+    -dot-output         : display derivation tree in dot format
+    -show-answers       : show answers
+    -show-interpolants  : show interpolants
+                          enable -pred-pruning option.
+    -depth     <n>      : explore up to depth n  (default unlimited)
+    -solutions <n>      : compute n solutions    (default all solutions)
+    -integer-arithmetic : use integer linear arithmetic. (default reals).
+    -clause-pruning     : pruning at the level of clause (default no pruning)
+    -pred-pruning       : pruning at the level of predicate (default no pruning)
+    -infinite-pruning   : pruning infinite derivations (default no pruning)
+                          enable -pred-pruning option.
+    -minimize-intp-calls: optimization to minimize the number of interpolation calls
+                          (only if interpolants are inductive).
+    -unscoped-intp      : generation of not necessarily well scoped interpolants
+    -scoped-intp        : generation of well scoped interpolants
+    -disjunctive-intp   : build fully disjunctive interpolants
 }}}
+
+===Common Configurations===
+
+# Standard CLP without tabling: run without options
+# Failure-Tabling CLP: run with options -clause-pruning -unscoped-intp
+# Failure-Tabling CLP with special treatment for infinite derivations: run with options -clause-pruning -unscoped-intp -infinite-pruning
