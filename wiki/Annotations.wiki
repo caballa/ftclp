@@ -42,7 +42,7 @@ These directives together will tell our solver that the two arguments of foo sho
 :- no_cache(foo(_,_)).
 }}}
 
-Our interpreter will not generate interpolants for foo/2 but it will apply unification whenever foo's arguments are involved.
+Our interpreter will not generate interpolants for foo/2 neither but the difference is that it will apply unification whenever foo's arguments are involved.
 
 
 ==Bibliography==
