@@ -2,38 +2,50 @@
 Program annotations
 -----------------------
 
-The Prolog programs can be annotated with the following directives:
+The CLP programs can be annotated with the following directives:
 
 :- tabled(foo(_,num)).
 
-Tells our interpreter that we should do tabling of foo/2. Moreover, it
-tells us that the 2nd argument is a number and hence, we will model it
-using the theory of (integer or real) linear arithmetic. The '_'
-symbols tells us that the argument should be modeled with Herbrand
-logic and use Prolog unification on it.
+Tells the CLP interpreter that it should do tabling on foo/2. Moreover, it tells the interpreter that the 2nd argument is a number and hence, it will model it using the theory of (integer or real) linear arithmetic. The `_` symbols tells us that the argument should be modelled with Herbrand logic and use Prolog unification on it.
+
+*Warning*: this directive is a must if we want to do tabling on a particular predicate.
 
 :- discriminants(bar(d,nd)).
 
 This is optional but it may help significantly tabling.  This idea
-comes from the paper Christiansen [1] that present a technique to
+comes from Christiansen et.al. (1) that present a technique to
 identify non-discriminating arguments, i.e., arguments that do not
 have any impact on the control flow of the logic program. The symbol
 'd' says to our interpreter that the argument is discriminant and 'nd'
-non-discriminating.
+non-discriminating. If an argument is marked as 'nd' then we can
+ignore it during the caching phase which increases the likelihood of
+pruning.
 
-[1] presents an automatic program transformation to eliminate from the
-original program all the non-discriminating arguments. In the future,
-we would like to use this transformation. Meanwhile, user must say so.
+Christiansen et.al. (1) present an automatic program transformation to
+eliminate from the original program all the non-discriminating
+arguments. In the future, we would like to use this
+transformation. Meanwhile, user must say so.
 
 :- no_cache(foo(_,_)).
 
-It says to our interpreter not to generate interpolants for foo/2 and
-do not perform entailment tests to run executions of foo/2. It's a bit
-redundant because if we do not annotate with :- tabled(foo(_,_)). we
-can get the same behavior.
+It says to the interpreter not to generate interpolants for
+foo/2. Although it's a bit counter-intuitive sometimes we might want
+to have:
+
+:- tabled(foo(num,num)).
+:- no_cache(foo(_,_)).
+
+These directives together will tell our solver that the two arguments
+of foo should be modelled using the integer/real solver but we should
+not bother generating interpolants. Instead, if we would use:
+
+:- no_cache(foo(_,_)).
+
+Our interpreter will not generate interpolants for foo/2 but it will
+apply unification whenever foo's arguments are involved.
 
 
 Bibliography
 
-[1] Non-discriminating Arguments and Their Uses. H. Christiansen and
-    J. P. Gallagher. ICLP'09.
+(1) Non-discriminating Arguments and Their Uses. H. Christiansen and J. P. Gallagher. ICLP'09.
+
