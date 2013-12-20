@@ -68,7 +68,7 @@ Failure Tabled Constraint Logic Programming by Interpolation
     -debug              : debug mode
     -dot-output         : display derivation tree in dot format
     -show-answers       : show answers
-    -show-interpolants  : show interpolants
+    -dump-interpolants  : write interpolants to <input_file>.intp
                           enable -pred-pruning option.
     -depth     <n>      : explore up to depth n  (default unlimited)
     -solutions <n>      : compute n solutions    (default all solutions)
