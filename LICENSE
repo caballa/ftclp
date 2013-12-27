@@ -18,7 +18,8 @@ ftclp uses code freely provided by generous people:
 - crit-bit trees for strings written in C by Jonas Gehring
   <jonas@jgehring.net>.
 
-- balanced tree and union-find written in Prolog by J. Gallagher (c)
-  Roskilde University.
+- balanced tree, union-find, scc, readprog, myterms, builtins,
+  canonical, vars, clauseTermElim written in Prolog by J. Gallagher
+  (c) Roskilde University.
 
 

@@ -6,9 +6,15 @@ The CLP programs can be annotated with the following directives:
 
 :- tabled(foo(_,num)).
 
-Tells the CLP interpreter that it should do tabling on foo/2. Moreover, it tells the interpreter that the 2nd argument is a number and hence, it will model it using the theory of (integer or real) linear arithmetic. The `_` symbols tells us that the argument should be modelled with Herbrand logic and use Prolog unification on it.
+Tells the CLP interpreter that it should do tabling on
+foo/2. Moreover, it tells the interpreter that the 2nd argument is a
+number and hence, it will model it using the theory of (integer or
+real) linear arithmetic. The `_` symbols tells us that the argument
+should be modelled with Herbrand logic and use Prolog unification on
+it.
 
-*Warning*: this directive is a must if we want to do tabling on a particular predicate.
+*Warning*: this directive is a must if we want to do tabling on a
+particular predicate.
 
 :- discriminants(bar(d,nd)).
 
@@ -37,15 +43,17 @@ to have:
 
 These directives together will tell our solver that the two arguments
 of foo should be modelled using the integer/real solver but we should
-not bother generating interpolants. Instead, if we would use:
+not bother generating interpolants for foo/2. Instead, if we would
+use:
 
 :- no_cache(foo(_,_)).
 
-Our interpreter will not generate interpolants for foo/2 but it will
-apply unification whenever foo's arguments are involved.
+Our interpreter will not generate interpolants for foo/2 neither but
+it will apply unification whenever foo's arguments are involved.
 
 
 Bibliography
 
-(1) Non-discriminating Arguments and Their Uses. H. Christiansen and J. P. Gallagher. ICLP'09.
+(1) Non-discriminating Arguments and Their Uses. H. Christiansen and
+J. P. Gallagher. ICLP'09.
 
