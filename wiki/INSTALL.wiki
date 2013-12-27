@@ -91,8 +91,9 @@ Failure Tabled Constraint Logic Programming by Interpolation
 
 ===Scoped vs Unscoped interpolants===
 
-An interpolant is _well scoped_ with respect to a head clause H
- (or a predicate P) if only contains variables of H (P). Otherwise, we say it is an _unscoped_ or _out-of-scoped_ interpolant. Ideally, we would like to have scoped interpolants because they can prune more derivations but they are currently more expensive to compute. Scoped interpolants can be computed using the option *-scoped-intp*. Alternatively, unscoped interpolants are computed with option *-unscoped-intp*.
+An interpolant is _well scoped_ with respect to a head clause H (or a predicate P) if only contains variables of H (P). Otherwise, we say it is an _unscoped_ or _out-of-scoped_ interpolant. Ideally, we would like to have scoped interpolants because they can prune more derivations but they are currently more expensive to compute. 
+
+Scoped interpolants can be computed using the option *-scoped-intp*. Alternatively, unscoped interpolants are computed with option *-unscoped-intp*.
 
   
 ===View Answers (Solutions) ===
