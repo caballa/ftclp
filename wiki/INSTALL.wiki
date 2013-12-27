@@ -58,8 +58,8 @@ Failure Tabled Constraint Logic Programming by Interpolation
          (C)2013 The University of Melbourne.
   Description: CLP interpreter with failure-based tabling.
 
-  Usage: cmmd -goal <G> -f  <input_file> [options] 
-         G must be a single CLP term between single quotes (e.g., 'foo(X)') 
+  Usage: ftclp.xx.yy -goal <G> -f  <input_file> [options] 
+         G is a single CLP term between single quotes (e.g., 'foo(X)') 
          For multiple goals G1,...,Gn wrap them into a predicate 
          wrap(...) :- G1,...,Gn. and call with -goal 'wrap(...)'
 
