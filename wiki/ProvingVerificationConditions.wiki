@@ -2,7 +2,7 @@
 
 It is well known that CLP provides a suitable formalism for expressing veriﬁcation conditions that guarantee the correctness of imperative, functional, or concurrent programs. Since FTCLP is a Constrained Horn Clauses solver we can use it in order to prove whether a set of verification conditions holds. 
 
-Note that these verification conditions can come from safety or termination as well as from different programming languages. Once we translated those to Horn clauses we can use directly FTCLP to prove them. This is one of the key advantages since we do not need to produce different different tools for different languages or properties. Moreover, since the use of CLP as intermediate representation in verification tools is becoming more popular, it can be straightforward to communicate FTCLP with other verifiers.
+Note that these verification conditions can come from safety or termination as well as from different programming languages. Once we translated those to Horn clauses we can use directly FTCLP to prove them. This is one of the key advantages of using CLP as intermediate language since we do not need to implement different different tools for different languages or properties. Moreover, since the use of CLP as intermediate representation in verification tools is becoming more popular, it can be straightforward to communicate FTCLP with other verifiers.
 
 
 <wiki:comment>
