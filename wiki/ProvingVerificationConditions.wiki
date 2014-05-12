@@ -12,7 +12,7 @@ such as [http://www7.in.tum.de/tools/hsf/ HSF] and [http://research.microsoft.co
 
 =Installation=
 
-We provide a script called _horn-prover_ that specializes FTCLP for proving verification conditions.
+We provide a script called _horn-prover_ that specializes FTCLP (by choosing some options) for proving verification conditions.
 
 Go to [https://code.google.com/p/ftclp] and install FTCLP.
 
