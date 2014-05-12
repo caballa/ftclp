@@ -1,22 +1,23 @@
+It is well known that CLP provides a suitable formalism for expressing veriﬁcation conditions that guarantee the correctness of imperative, functional, or concurrent programs. Since FTCLP is a Constrained Horn Clauses solver we can use it in order to prove whether a set of verification conditions holds. 
+
+Note that these verification conditions can come from safety or termination as well as from different programming languages. Once we translated those to Horn clauses we can use directly FTCLP to prove them. This is one of the key advantages since we do not need to produce different different tools for different languages or properties. Moreover, since the use of CLP as intermediate representation in verification tools is becoming more popular, it can be straightforward to communicate FTCLP with other verifiers.
+
+
 <wiki:comment>
-
-=Description=
-
-This project shows a solver for *recursive [http://en.wikipedia.org/wiki/Horn_clause Horn clauses]* based on interpolation.
-
-This solver can be used to prove safety properties or termination in both sequential and concurrent programs with recursive function calls. For instance, for assertion checking the program and the safety property are translated into Horn clauses such that the program is safe if and only if the solver cannot find a solution.
-
 The solver is a direct application of [https://code.google.com/p/ftclp/ Failure-Based Tabling Constraint Logic Programming (FTCLP)]. In FTCLP, the Horn clauses are symbolically executed in a _top-down_, depth-first search manner similarly to CLP (Constraint Logic Programming) systems. The main difference is that since relations can be recursive, FTCLP uses interpolation to generate candidates in order to prove by induction that the search can be safely stopped for clauses with _infinite derivations_. FTCLP has similarities to other tools based on Horn clauses 
 such as [http://www7.in.tum.de/tools/hsf/ HSF] and [http://research.microsoft.com/en-us/um/people/leonardo/muze.pdf muZ] from [http://z3.codeplex.com/ Z3] but it exhibits some important differences as well. To mention some of them, HSF solves non-recursive Horn clauses originated from an abstracted program using predicate abstraction. muZ relies on a _bottom-up_ datalog engine which can be instantiated with different algorithms (e.g., PDR, Bounded model checking, etc). FTCLP can be implemented as an extension to any CLP system. One of the advantages of this is that it can benefit from years of research in the CLP community. For instance, FTCLP can be implemented on the top of an efficient Tabling system. 
+</wiki:comment>
 
-=Installation (only for Linux)=
+=Installation=
+
+We provide a script called _horn-prover_ that specializes FTCLP for proving verification conditions.
 
 Go to [https://code.google.com/p/ftclp] and install FTCLP.
 
 SVN checkout the repository of this project, and update your PATH variable as follows:
 
 {{{
-export PATH=${PATH}:path_to_svn_repo/horn_prover
+export PATH=${PATH}:path_to_svn_repo/bin/horn_prover
 }}}
 
 =Usage=
@@ -35,9 +36,9 @@ options:
 
 =Examples=
 
-The SVN repository contains a directory called *examples* that contains several programs.
 
-Read this [http://www.clip.dia.fi.upm.es/~jorge/docs/ftclp_appendix.pdf document] to learn how to encode C programs and their safety properties into Horn clauses. Also, this document shows examples of safe inductive invariants computed by the tool.
+
+Read this [http://www.clip.dia.fi.upm.es/~jorge/docs/ftclp_appendix.pdf document] to learn how to encode C programs and, for instance, their safety properties into Horn clauses. Also, this document shows examples of safe inductive invariants computed by the tool.
 
 As an example, suppose the following C program fragment from the paper "A Practical and Complete Approach to Predicate Refinement":  
 
@@ -185,7 +186,7 @@ Just to be clear, a parser from SMTLIB2 is not currently implemented.
 
 = View Counterexamples =
 
-For *horn-prover*, if a solution is found then it means that the program is unsafe and the solution corresponds to a counterexample. We print the sequence of executed clauses (separated by the dash *-* symbol) that led to a solution. A clause is denoted by p/n/k where p is the name of the relation functor, n is the arity of the relation, and k is the number of the clause. The number of the clauses are assigned based on the order in which the clauses appear in the program. This is an example of a counterexample:
+For *FTCLP*, if a solution is found then it means that the program is unsafe and the solution corresponds to a counterexample. We print the sequence of executed clauses (separated by the dash *-* symbol) that led to a solution. A clause is denoted by p/n/k where p is the name of the relation functor, n is the arity of the relation, and k is the number of the clause. The number of the clauses are assigned based on the order in which the clauses appear in the program. This is an example of a counterexample:
 
 {{{
 Solution: prove/0/1-p/6/2-l/4/1-l/4/2-err/1/1 
@@ -193,8 +194,6 @@ Solution: prove/0/1-p/6/2-l/4/1-l/4/2-err/1/1
 
 =Current Limitations=
 
-  * *horn-prover* only proves invariant candidates generated by interpolation. Thus, any other technique that aims at finding safe invariants (e.g., Abstract Interpretation) can help significantly our tool.
+  * *FTCLP* only proves invariant candidates generated by interpolation. Thus, any other technique that aims at finding safe invariants (e.g., Abstract Interpretation) can help significantly our tool.
 
-  * *horn-prover* only generates interpolants from real and linear integer arithmetic theories. Consideration of recursive datatypes such as lists is in our TODO list. 
-
-</wiki:comment>
+  * *FTCLP* only generates interpolants from real and linear integer arithmetic theories. Consideration of recursive datatypes such as lists is in our TODO list. 
