@@ -1,4 +1,4 @@
-=Proving CLP programs originated from Program Verification Conditions=
+=Proving CLP programs originated from Program VCs=
 
 CLP (also called Constrained Horn Clauses, CHC) provides a suitable formalism for expressing veriﬁcation conditions that guarantee the correctness of imperative, functional, or concurrent programs. Since FTCLP is a solver for CHC we can use it in order to prove whether a set of verification conditions holds. 
 
