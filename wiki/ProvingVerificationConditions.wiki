@@ -2,8 +2,9 @@
 
 CLP (also called Constrained Horn Clauses, CHC) provides a suitable formalism for expressing veriﬁcation conditions that guarantee the correctness of imperative, functional, or concurrent programs. Since FTCLP is a solver for CHC we can use it in order to prove whether a set of verification conditions holds. 
 
-These verification conditions can come from safety or termination as well as from different programming languages. Once we translated those to Constrained Horn clauses we can use directly FTCLP to prove them. This is one of the key advantages of using CLP as intermediate language since we do not need to implement different tools for different languages or properties. Moreover, since the use of CLP as intermediate representation in verification tools is becoming more popular, it is much easier to communicate FTCLP with other verifiers.
+These verification conditions (VCs) can come from safety or termination as well as from different programming languages. Once we translated those to Constrained Horn clauses we can use directly FTCLP to prove them. This is one of the key advantages of using CLP as intermediate language since we do not need to implement different tools for different languages or properties. Moreover, since the use of CLP as intermediate representation in verification tools is becoming more popular, it is much easier to communicate FTCLP with other verifiers.
 
+The VCs should be encoded in such way that they hold iff its corresponding CLP program has no solutions.
 
 <wiki:comment>
 The solver is a direct application of [https://code.google.com/p/ftclp/ Failure-Based Tabling Constraint Logic Programming (FTCLP)]. In FTCLP, the Horn clauses are symbolically executed in a _top-down_, depth-first search manner similarly to CLP (Constraint Logic Programming) systems. The main difference is that since relations can be recursive, FTCLP uses interpolation to generate candidates in order to prove by induction that the search can be safely stopped for clauses with _infinite derivations_. FTCLP has similarities to other tools based on Horn clauses 
@@ -188,7 +189,7 @@ Just to be clear, a parser from SMTLIB2 is not currently implemented.
 
 = View Counterexamples =
 
-For *FTCLP*, if a solution is found then it means that the program is unsafe and the solution corresponds to a counterexample. We print the sequence of executed clauses (separated by the dash *-* symbol) that led to a solution. A clause is denoted by p/n/k where p is the name of the relation functor, n is the arity of the relation, and k is the number of the clause. The number of the clauses are assigned based on the order in which the clauses appear in the program. This is an example of a counterexample:
+Since VCs hold iff its corresponding CLP program has no solutions, if a solution is found then it means that the program is unsafe and the solution corresponds to a counterexample. We print the sequence of executed clauses (separated by the dash *-* symbol) that led to a solution. A clause is denoted by p/n/k where p is the name of the relation functor, n is the arity of the relation, and k is the number of the clause. The number of the clauses are assigned based on the order in which the clauses appear in the program. This is an example of a counterexample:
 
 {{{
 Solution: prove/0/1-p/6/2-l/4/1-l/4/2-err/1/1 
