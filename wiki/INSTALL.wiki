@@ -77,7 +77,7 @@ Failure Tabled Constraint Logic Programming by Interpolation (FTCLP)
    -pred-pruning      : pruning at the level of predicate (default no pruning)
    -infinite-pruning  : pruning infinite derivations (default no pruning)
 	-min-unroll <n>: minimum number of unrollings for recursive clauses 
-                           before attempting child-parent subsumption (default 1)
+                          before attempting child-parent subsumption (default 1)
 	-max-unroll <n>: maximum number of unrollings for recursive clauses (default unlimited)
    -minimize-intp-calls: optimization to minimize the number of interpolation calls
                          (only if interpolants are inductive)
