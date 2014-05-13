@@ -53,41 +53,43 @@ ftclp.xx.yy in the bin directory.
 {{{
 ftclp.xx.yy -help
 
-Failure Tabled Constraint Logic Programming by Interpolation
-         by G. Gange, J.A. Navas, P. Schachte, H. Sondergaard, and P.J. Stuckey.
-         (C)2013 The University of Melbourne.
-  Description: CLP interpreter with failure-based tabling.
+Failure Tabled Constraint Logic Programming by Interpolation (FTCLP)
+  Authors: G. Gange, J.A. Navas, P. Schachte, H. Sondergaard, and P.J. Stuckey.
+  (C)2013 The University of Melbourne.
+  Description: A solver for recursive Constrained Horn Clauses.
 
-  Usage: ftclp.xx.yy -goal <G> -f  <input_file> [options] 
-         G is a single CLP term between single quotes (e.g., 'foo(X)') 
-         For multiple goals G1,...,Gn wrap them into a predicate 
-         wrap(...) :- G1,...,Gn. and call with -goal 'wrap(...)'
+  Usage: cmmd -goal <g> -f  <input_file>.pl [options] 
+
+         g must be a single atom between quotes (e.g., 'foo(X)') 
+         For a goal with multiple atoms g1,...,gn create a new clause of the form:
+         newg :- g1,...,gn. and call with -goal 'newg'
 
   Options: 
-    -help               : display this list of options
-    -debug              : debug mode
-    -dot-output         : display derivation tree in dot format
-    -show-answers       : show answers
-    -dump-interpolants  : write interpolants to <input_file>.intp
-                          enable -pred-pruning option.
-    -depth     <n>      : explore up to depth n  (default unlimited)
-    -solutions <n>      : compute n solutions    (default all solutions)
-    -integer-arithmetic : use integer linear arithmetic. (default reals).
-    -clause-pruning     : pruning at the level of clause (default no pruning)
-    -pred-pruning       : pruning at the level of predicate (default no pruning)
-    -infinite-pruning   : pruning infinite derivations (default no pruning)
-                          enable -pred-pruning option.
-    -minimize-intp-calls: optimization to minimize the number of interpolation calls
-                          (only if interpolants are inductive).
-    -unscoped-intp      : generation of not necessarily well scoped interpolants
-    -scoped-intp        : generation of well scoped interpolants
+   -help, --help      : display this list of options
+   -debug             : debug mode
+   -dot-output        : display derivation tree in dot format
+   -show-answers      : show answers
+   -dump-interpolants : write interpolants into <input_file>.intp
+   -depth     <n>     : explore up to depth n  (default unlimited)
+   -solutions <n>     : compute n solutions    (default all solutions)
+   -integer-arithmetic: interpret all constraints over integer arithmetic (default reals)
+   -clause-pruning    : pruning at the level of clause (default no pruning)
+   -pred-pruning      : pruning at the level of predicate (default no pruning)
+   -infinite-pruning  : pruning infinite derivations (default no pruning)
+	-min-unroll <n>: minimum number of unrollings for recursive clauses 
+                           before attempting child-parent subsumption (default 1)
+	-max-unroll <n>: maximum number of unrollings for recursive clauses (default unlimited)
+   -minimize-intp-calls: optimization to minimize the number of interpolation calls
+                         (only if interpolants are inductive)
+   -unscoped-intp      : generation of not necessarily well scoped interpolants
+   -scoped-intp        : generation of well scoped interpolants
 }}}
 
 ===Common Usage Configurations===
 
   # Standard CLP without tabling: run without options
-  # Failure-Tabling CLP: run with options -clause-pruning -unscoped-intp
-  # Failure-Tabling CLP with special treatment for infinite derivations: run with options -clause-pruning -scoped-intp -infinite-pruning
+  # Failure-Tabling CLP: run with options *-clause-pruning* *-unscoped-intp*
+  # Failure-Tabling CLP with special treatment for infinite derivations: run with options *-clause-pruning* *-scoped-intp* *-infinite-pruning*
 
 ===Scoped vs Unscoped interpolants===
 
