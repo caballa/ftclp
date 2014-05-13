@@ -1,10 +1,10 @@
 =Proving CLP programs originated from Program VCs=
 
-CLP (also called Constrained Horn Clauses, CHC) provides a suitable formalism for expressing veriﬁcation conditions that guarantee the correctness of imperative, functional, or concurrent programs. Since FTCLP is a solver for CHC we can use it in order to prove whether a set of verification conditions holds. 
+CLP (also called Constrained Horn Clauses, CHC) provides a suitable formalism for expressing veriﬁcation conditions that guarantee the correctness of imperative, functional, or concurrent programs. Since FTCLP is a solver for CHC we can use it in order to prove whether a set of verification conditions (VCs) holds. 
 
-These verification conditions (VCs) can come from safety or termination as well as from different programming languages. Once we translated those to Constrained Horn clauses we can use directly FTCLP to prove them. This is one of the key advantages of using CLP as intermediate language since we do not need to implement different tools for different languages or properties. Moreover, since the use of CLP as intermediate representation in verification tools is becoming more popular, it is much easier to communicate FTCLP with other verifiers.
+These VCs can come from safety or termination as well as from different programming languages. Once we translated those to Constrained Horn clauses we can use directly FTCLP to prove them. This is one of the key advantages of using CLP as intermediate language since we do not need to implement different tools for different languages or properties. Moreover, since the use of CLP as intermediate representation in verification tools is becoming more popular, it is much easier to communicate FTCLP with other verifiers.
 
-The VCs should be encoded in such way that they hold iff its corresponding CLP program has no solutions.
+The VCs must be encoded in such way that they hold iff its corresponding CLP program has no solutions.
 
 <wiki:comment>
 The solver is a direct application of [https://code.google.com/p/ftclp/ Failure-Based Tabling Constraint Logic Programming (FTCLP)]. In FTCLP, the Horn clauses are symbolically executed in a _top-down_, depth-first search manner similarly to CLP (Constraint Logic Programming) systems. The main difference is that since relations can be recursive, FTCLP uses interpolation to generate candidates in order to prove by induction that the search can be safely stopped for clauses with _infinite derivations_. FTCLP has similarities to other tools based on Horn clauses 
@@ -41,7 +41,7 @@ options:
 
 
 
-Read this [http://www.clip.dia.fi.upm.es/~jorge/docs/ftclp_appendix.pdf document] to learn more about how to encode C programs and, for instance, their safety properties into Horn clauses. Also, this document shows examples of safe inductive invariants computed by the tool.
+Read this [http://www.clip.dia.fi.upm.es/~jorge/docs/ftclp_appendix.pdf document] to learn more about how to encode C programs and, for instance, their safety properties into Constrained Horn clauses. Also, this document shows examples of safe inductive invariants computed by the tool.
 
 As an example, suppose the following C program fragment from the paper "A Practical and Complete Approach to Predicate Refinement":  
 
@@ -55,7 +55,7 @@ As an example, suppose the following C program fragment from the paper "A Practi
     assert(y<=0);
 }}}
 
-Next, we translate the program into Horn clauses. Basically each basic block is translated into a Horn clause. Note that we do not encode the verification conditions originated from proving the above program. Instead, we simply translate the program as it is into Horn clauses:
+Next, we translate the program into CHCs. Basically each basic block is translated into a CHC. Note that we do not encode the verification conditions originated from proving the above program. Instead, we simply translate the program as it is into CHCs:
 
 {{{
 prove :- 
@@ -78,7 +78,7 @@ err(_X,Y,I,J):- clp_meta([I .=. J, Y .>. 0]).
 
 First note that we have encoded the loop using the relation l/4. The first rule of l/4 is recursive and corresponds to the body of the loop. The second rule of l/4 corresponds to the exit of the loop. Note that the err/4 relation encodes the safety property and it is the negation of the condition that appears in the C assert. The initial state has been encoded within the relation prove/0 before we call l/4. Then, it is not hard to see that the original C fragment is safe iff the relation prove/0 has no solutions.
 
-Alternatively, we can encode the verification conditions originated form the above program as we would do using HSF or muZ:
+Alternatively, we can encode the verification conditions originated form the above program as we would do using for instance muZ:
 
 {{{
 
@@ -161,11 +161,11 @@ All relations should be annotated via *tabled/1* directives:
 :- tabled(foo(_,num)).
 }}}
 
-Tells FTCLP that it should do tabling on foo/2. Moreover, it tells FTCLP that the second argument is a number and hence, it will model it using the theory of integer linear arithmetic (LIA). The `_` symbol tells us that the argument should be modelled with Herbrand logic and use Prolog unification on it.
+Tells FTCLP that it should do tabling on foo/2. Moreover, it tells FTCLP that the second argument is a number and hence, it will model it using the theory of integer or real linear arithmetic, depending on one of the horn-prover script options. The `_` symbol tells us that the argument should be modelled with Herbrand logic and use Prolog unification on it. 
 
 =Translation to SMTLIB2 format=
 
-Our prolog notation can be translated in a straightforward manner to SMTLIB2 format.
+Our CLP notation can be translated in a straightforward manner to SMTLIB2 format.
 E.g., the above program can be written in SMTLIB2 as follows:
 
 {{{
