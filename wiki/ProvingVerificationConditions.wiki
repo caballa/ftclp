@@ -1,8 +1,8 @@
 =Proving Verification Conditions using FTCLP=
 
-It is well known that CLP provides a suitable formalism for expressing veriﬁcation conditions that guarantee the correctness of imperative, functional, or concurrent programs. Since FTCLP is a Constrained Horn Clauses solver we can use it in order to prove whether a set of verification conditions holds. 
+CLP (also called Constrained Horn Clauses, CHC) provides a suitable formalism for expressing veriﬁcation conditions that guarantee the correctness of imperative, functional, or concurrent programs. Since FTCLP is a solver for CHC we can use it in order to prove whether a set of verification conditions holds. 
 
-Note that these verification conditions can come from safety or termination as well as from different programming languages. Once we translated those to Horn clauses we can use directly FTCLP to prove them. This is one of the key advantages of using CLP as intermediate language since we do not need to implement different tools for different languages or properties. Moreover, since the use of CLP as intermediate representation in verification tools is becoming more popular, it is much easier to communicate FTCLP with other verifiers.
+These verification conditions can come from safety or termination as well as from different programming languages. Once we translated those to Constrained Horn clauses we can use directly FTCLP to prove them. This is one of the key advantages of using CLP as intermediate language since we do not need to implement different tools for different languages or properties. Moreover, since the use of CLP as intermediate representation in verification tools is becoming more popular, it is much easier to communicate FTCLP with other verifiers.
 
 
 <wiki:comment>
@@ -12,7 +12,7 @@ such as [http://www7.in.tum.de/tools/hsf/ HSF] and [http://research.microsoft.co
 
 =Installation=
 
-We provide a script called _horn-prover_ that specializes FTCLP (by choosing some options) for proving verification conditions.
+We provide a script called _horn-prover_ that specializes FTCLP (by choosing some suitable options) for proving verification conditions.
 
 Go to [https://code.google.com/p/ftclp] and install FTCLP.
 
@@ -27,11 +27,11 @@ export PATH=${PATH}:path_to_svn_repo/bin/horn_prover
 {{{
 
 horn_prover filename.pl -entry E [ <options> ]
-       E     is a single term between single quotes (e.g., 'prove')
+       E     is a single atom between single quotes (e.g., 'prove')
 options:
        -integer-arithmetic interpret all constraints over integer arithmetic (default real arithmetic)
        -min-unroll <n>     minimum num of unrollings for recursive clauses before attempt child-parent subsumption
-       -max-unroll <n>     maximum num of unrollings for recursive clauses
+       -max-unroll <n>     maximum num of unrollings for recursive clauses (default: no limit)
        -dump-interpolants  write interpolants to filename.intp
        -show-proof         write the proof tree in a .dot file
 }}}
@@ -40,7 +40,7 @@ options:
 
 
 
-Read this [http://www.clip.dia.fi.upm.es/~jorge/docs/ftclp_appendix.pdf document] to learn how to encode C programs and, for instance, their safety properties into Horn clauses. Also, this document shows examples of safe inductive invariants computed by the tool.
+Read this [http://www.clip.dia.fi.upm.es/~jorge/docs/ftclp_appendix.pdf document] to learn more about how to encode C programs and, for instance, their safety properties into Horn clauses. Also, this document shows examples of safe inductive invariants computed by the tool.
 
 As an example, suppose the following C program fragment from the paper "A Practical and Complete Approach to Predicate Refinement":  
 
