@@ -87,7 +87,7 @@ err(_X,Y,I,J):- clp_meta([I .=. J, Y .>. 0]).
 
 First note that we have encoded the loop using the relation l/4. The first rule of l/4 is recursive and corresponds to the body of the loop. The second rule of l/4 corresponds to the exit of the loop. Note that the err/4 relation encodes the safety property and it is the negation of the condition that appears in the C assert. The initial state has been encoded within the relation prove/0 before we call l/4. It should not been hard to see that the original C fragment is safe iff the relation prove/0 has no solutions.
 
-Alternatively, we can encode the verification conditions originated form the above program using *Hoare-logic* style:
+Alternatively, we can encode the verification conditions originated form the above program using *Hoare-logic* based encoding:
 
 {{{
 
@@ -111,7 +111,7 @@ inv(X1,Y1,I,J):-
 err(_X,Y,I,J):- clp_meta([Y .>. 0]).
 }}}
 
-FTCLP reports no solution with either the small-step or Hoare-logic encoding which means that the original C program is safe.
+FTCLP reports no solutions with either the above small-step or Hoare-logic encodings which means that the original C program is safe.
 
 <wiki:comment>
 Another classic example is the [http://en.wikipedia.org/wiki/McCarthy_91_function McCarthy 91 function]:
