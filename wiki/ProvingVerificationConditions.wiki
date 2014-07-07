@@ -58,7 +58,7 @@ As an example, suppose the following C program fragment from the paper "A Practi
 Next, we translate the above program into a set of CHCs using an encoding based on a *small-step* semantics form:
 
 {{{
-state(X1,...,Xn) :- C(X1,...Xn,X1',...,Xn'), next_state(X1',..,Xn').
+state(X1,...,Xn) :- C(X1,...,Xn,X1',...,Xn'), next_state(X1',...,Xn').
 }}}
 
 <wiki:comment>
@@ -87,7 +87,7 @@ err(_X,Y,I,J):- clp_meta([I .=. J, Y .>. 0]).
 
 First note that we have encoded the loop using the relation l/4. The first rule of l/4 is recursive and corresponds to the body of the loop. The second rule of l/4 corresponds to the exit of the loop. Note that the err/4 relation encodes the safety property and it is the negation of the condition that appears in the C assert. The initial state has been encoded within the relation prove/0 before we call l/4. Then, it is not hard to see that the original C fragment is safe iff the relation prove/0 has no solutions.
 
-Alternatively, we can encode the verification conditions originated form the above program using Hoare-logic style:
+Alternatively, we can encode the verification conditions originated form the above program using *Hoare-logic* style:
 
 {{{
 
