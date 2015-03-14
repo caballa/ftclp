@@ -1,0 +1,128 @@
+#!/bin/bash
+
+#*****************************************************************************/
+# Author: Jorge A. Navas, The University of Melbourne 2012-2013
+# 
+# Wrapper to use ftclp as a verification tool for Horn clauses.
+# 
+# If it terminates, print to the standard output either: SAFE, UNSAFE,
+# UNKNOWN, or ERROR.
+#*****************************************************************************/
+
+# Exit on any failed command
+set -o errexit
+
+FTCLP_CMD="ftclp.0.1"   
+
+die() {
+    echo "$@" 1>&2
+    exit 1
+}
+
+usage() {
+cat <<EOF
+usage: horn_prover filename.pl -entry E [ <options> ]
+       E     is a single term between single quotes (e.g., 'prove')
+options:
+       -integer-arithmetic interpret all constraints over integer arithmetic (default real arithmetic)
+       -min-unroll <n>     minimum num of unrollings for recursive clauses before attempt child-parent subsumption
+       -max-unroll <n>     maximum num of unrollings for recursive clauses
+       -dump-interpolants  write interpolants to filename.intp
+       -show-proof         write the proof tree in a .dot file
+EOF
+}
+
+if [ $# -lt 3 ] 
+then
+  usage
+  exit 2
+fi
+
+if [ $1 == "-help" ]; then
+    usage
+    exit 1
+fi
+
+filename=$1
+test -f $1  || die "ERROR horn_prover: cannot find file $filename"
+
+basefilename=`basename $filename`
+dirname=`dirname $filename`
+file_minus_ext="${basefilename%.*}"
+fileext=${basefilename##$file_minus_ext.}
+
+basename_out=${file_minus_ext}.out
+abspath_out="`cd \"$dirname\" 2>/dev/null && pwd || echo \"$dirname\"`/$basename_out"
+out=${abspath_out}
+
+FTCLP_OPTS="-clause-pruning -pred-pruning -infinite-pruning -scoped-intp -minimize-intp-calls -solutions 1 -show-answers -no-verbose"
+
+# process args
+while [ "$2" != "" ]; do
+    case "$2" in	
+	-help)
+	    usage
+	    exit 1
+	    ;;	
+	-entry)
+              shift
+              ENTRY="$2"
+              shift
+	    ;;	
+	-min-unroll)
+              shift
+              MIN_UNROLL="$2"
+              shift
+	    FTCLP_OPTS="$FTCLP_OPTS -min-unroll $MIN_UNROLL" 
+	    ;;	
+	-max-unroll)
+              shift
+              MAX_UNROLL="$2"
+              shift
+	    FTCLP_OPTS="$FTCLP_OPTS -max-unroll $MAX_UNROLL" 
+	    ;;	
+	-integer-arithmetic)
+              shift
+	    FTCLP_OPTS="$FTCLP_OPTS -integer-arithmetic" 
+	    ;;	
+	-show-proof)
+              shift
+	    FTCLP_OPTS="$FTCLP_OPTS -dot-output" 
+	    ;;	
+	-dump-interpolants)
+              shift
+	    FTCLP_OPTS="$FTCLP_OPTS -dump-interpolants" 
+	    ;;	
+	*)
+	    echo "unknown arg: $2"
+	    usage
+	    exit 0
+	    ;;	
+    esac
+done
+
+# This is to view and save the output of FTCLP at the same time.
+# $FTCLP_CMD -goal $ENTRY -f $filename $FTCLP_OPTS | tee ${out}
+
+# This is to save directly the output of FTCLP
+$FTCLP_CMD -goal $ENTRY -f $filename $FTCLP_OPTS >& ${out} || die "ERROR horn_prover: something unexpected happened."
+
+##
+# Interpret the output messages from FTCLP
+##
+if grep "RESULT: NO SOLUTIONS" ${out} > /dev/null ; then
+     echo -e "SAFE"
+else
+    if grep "RESULT: SOLUTIONS" ${out} > /dev/null ; then
+        echo -e "UNSAFE"
+    else
+        if grep "RESULT: INCOMPLETE" ${out} > /dev/null ; then
+	  echo -e "UNKNOWN"
+        else
+	  echo -e "ERROR"
+        fi
+    fi
+fi
+
+
+

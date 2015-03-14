@@ -1,0 +1,84 @@
+#!/bin/bash
+
+#*******************************************************************************
+# Installation script for ciao
+#
+# Author: Jorge. A Navas, The University of Melbourne 2013
+#*****************************************************************************/
+
+
+# Exit on any failed command
+set -o errexit
+
+# Exit with message error
+die() {
+    echo "$@" 1>&2
+    exit 1
+}
+
+# get directory name
+get_dir() {
+	pushd "$1" > /dev/null
+	pwd
+	popd > /dev/null
+}
+
+# download urls
+w_get() {
+    wget "$1" 
+}
+
+# extract tarballs
+extract_to () {
+    tarball="$1"
+    target_dir="$2"
+    mkdir -p "$target_dir"
+
+    basefilename=`basename $tarball`
+    dirname=`dirname $tarball`
+    file_minus_ext="${basefilename%.*}"
+    fileext=${basefilename##$file_minus_ext.}
+
+    if [ "$fileext" == "bz2" ]; then
+        # assume tar.bz2
+        tar --directory "$target_dir" --strip-components=1 -jxf "$tarball"
+    else 
+        if [ "$fileext" == "tgz" ]; then
+	  gzip -dc "$tarball" | tar --directory "$target_dir" --strip-components=1 -xvf-
+        else
+	  if [ "$fileext" == "gz" ]; then
+             # assume tar.gz
+	      tar --directory "$target_dir" --strip-components=1 -xvzf "$tarball"
+	  else
+	      die "Unrecognized compression format"
+	  fi
+        fi
+    fi
+}
+
+# Directory of this script
+SCRIPT_DIR="`get_dir \`dirname ${BASH_SOURCE[0]}\``"
+
+### directory where to install ciao
+CIAO_INSTALL="$SCRIPT_DIR/third-party/ciao"
+
+### ciao tarball's  url
+TARBALL=CiaoDE-1.14.2-13646.tar.gz
+CIAO_TARBALL_URL="http://ciao-lang.org/packages/1.14/13646/$TARBALL"
+
+if [[ ! -d "$CIAO_INSTALL" ]]; then
+    mkdir -p "$CIAO_INSTALL"
+    ## Download files
+    w_get "$CIAO_TARBALL_URL"
+    ## extract files
+    extract_to "$TARBALL" "$CIAO_INSTALL"
+    rm -f $TARBALL
+    ## install ciao
+    cd "$CIAO_INSTALL"
+    ./ciaosetup configure --prefix=$CIAO_INSTALL/build --instype=src --sysavail=user
+    ./ciaosetup build 
+    ./ciaosetup install
+    echo -e "Installation finished successfully\n"
+    echo -e "ciao-prolog has been installed in $CIAO_INSTALL." 
+fi
+
