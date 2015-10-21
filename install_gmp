@@ -51,6 +51,7 @@ if [[ ! -d "$GMP_INSTALL" ]]; then
     ABI=32 ./configure --prefix="$GMP_INSTALL/build" --enable-cxx
     make -C "$GMP_INSTALL"
     make install -C "$GMP_INSTALL"
+    mkdir -p "$SCRIPT_DIR/lib"
     ln -s "$GMP_INSTALL/build/lib/libgmp.a"  "$SCRIPT_DIR/lib/libgmp.a"
     ln -s "$GMP_INSTALL/build/lib/libgmpxx.a"  "$SCRIPT_DIR/lib/libgmpxx.a"
     echo -e "Installation finished successfully\n"
