@@ -9,7 +9,6 @@ before_install:
   - if [ $TRAVIS_OS_NAME == linux ]; then sudo apt-get update; fi
   - if [ $CC == clang ] && [ $TRAVIS_OS_NAME == linux ]; then sudo apt-get update && sudo apt-get install -y llvm-3.4 llvm-3.4-dev; fi
   - if [ $TRAVIS_OS_NAME == linux ]; then sudo apt-get install emacs build-essential texlive texinfo imagemagick gcc-multilib libc6-i386 libc6-dev-i386 g++-multilib; fi
-  - FTCLP_INSTALL=$TRAVIS_BUILD_DIR/ftclp
   - # CIAOTGZ=CiaoDE-latest.tar.gz; wget http://ciao-lang.org/packages/master/$CIAOTGZ; mkdir $CIAODIR; tar --directory "$CIAODIR" --strip-components=1 -xvzf "$TRAVIS_BUILD_DIR/$CIAOTGZ"
 
 before_script:
@@ -36,7 +35,7 @@ notifications:
   email: false
 
 env:
-  - LANG="en_US.UTF-8"
+  - LANG="en_US.UTF-8" FTCLP_INSTALL=$TRAVIS_BUILD_DIR/ftclp
 
 os:
   - linux

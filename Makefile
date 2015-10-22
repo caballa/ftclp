@@ -11,6 +11,8 @@ all:
 	@echo " ---------------------------------------------------------------"
 	@echo "   Compiling and generating executable                          "
 	@echo " ---------------------------------------------------------------"
+	mkdir -p $$FTCLP_INSTALL/bin
+	mkdir -p $$FTCLP_INSTALL/lib
 	ln -sf ${MSAT_DIR}/lib/libmathsat.a $$FTCLP_INSTALL/lib
 	cd solver && make 
 	cd trie && make
