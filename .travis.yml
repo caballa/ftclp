@@ -35,7 +35,7 @@ notifications:
   email: false
 
 env:
-  - LANG="en_US.UTF-8" FTCLP_INSTALL=$TRAVIS_BUILD_DIR/ftclp
+  - LANG="en_US.UTF-8" FTCLP_INSTALL=$TRAVIS_BUILD_DIR
 
 os:
   - linux
