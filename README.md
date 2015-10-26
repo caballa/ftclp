@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/jfmc/ftclp.svg?branch=master)](https://travis-ci.org/jfmc/ftclp)
+
 # FTCLP
 
 Interpreter for Constraint Logic Programming (CLP), called FTCLP 
