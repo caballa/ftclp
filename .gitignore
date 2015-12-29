@@ -1,0 +1,11 @@
+/GPATH
+/GRTAGS
+/GTAGS
+/third-party/gmp-6.0.0/
+/third-party/ciao/
+
+*.d
+*.so
+*.o
+*.itf
+*.po
