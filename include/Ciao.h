@@ -310,6 +310,7 @@ namespace Ciao {
 	return static_cast<T*>(p);
     }
     assert(false); // FIXME: capture properly the exception
+    return 0;
   }
   
 };

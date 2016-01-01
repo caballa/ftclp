@@ -13,11 +13,11 @@
 	]).
 
 %  Ciao libraries
-:- use_module(library(filenames), [file_name_extension/3]).
+:- use_module(library(pathnames), [path_splitext/3]).
 :- use_module(library(terms)    , [atom_concat/2]).
 
 open_dotfile(FileName,Stream):-
-	file_name_extension(FileName,Base,_Extension),	
+	path_splitext(FileName,Base,_Extension),	
 	atom_concat(Base,'.dot',DotFileName),
 	open(DotFileName,write,Stream),
 	write_dotfile_header(Stream).

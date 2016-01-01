@@ -9,7 +9,7 @@
 %  Ciao libraries
 :- use_module(library(read)).
 :- use_module(library(write)).
-:- use_module(library(filenames), [file_name_extension/3]).
+:- use_module(library(pathnames), [path_splitext/3]).
 
 %------------------------------------------------------------------------------%
 % remove_useless_clauses(+,-)
@@ -28,7 +28,7 @@ remove_useless_clauses(Ps, Procs, Dirs, InFile, OutFile):-
         infer_nonterminating_predicates(Procs, RecPreds, NonTermPs),
         remove_non_terminating_predicates(Procs, NonTermPs, [], NewCls),
         /* here write the transformed program into OutFile */		 
-        file_name_extension(InFile,Base,Extension),	
+        path_splitext(InFile,Base,Extension),	
         atom_concat(Base,'__useless_clause_removal', Base0),
         atom_concat(Base0,Extension, OutFile),
         open(OutFile,write,Stream),	

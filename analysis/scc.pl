@@ -11,10 +11,9 @@
 :- use_module(library(lists)).
 :- use_module(library(sort)).
 %  Own libraries
-:- use_module('../frontend/readprog', [user_clauses/3, sortClauses/3]).
+:- use_module('../frontend/readprog', [user_clauses/3, sortClauses/3, readprog/2]).
 :- use_module('../adt/balanced_tree').
 :- use_module('../adt/mystrings').
-:- use_module('../frontend/readprog', [readprog/2]).
 
 %-------------------------------------------------------------------------------%
 % find_scc_pred(+SCCs,+Pred,-SCC)

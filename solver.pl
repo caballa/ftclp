@@ -62,12 +62,13 @@
 	]).
 
 %  Own libraries
-:- use_module('solver/ciao_prolog_smt').
+:- use_module('solvers_C/ciao_smt').
 :- use_module('op_attributes', [create_var_atom/2, print_term_with_attribute/1]).
 :- use_module(options).
 :- use_module(debug).
 :- use_module(counters).
 %  Ciao libraries
+:- use_module(engine(attributes)).
 :- use_module(timer).
 :- use_module(library(terms) , [atom_concat/2]).
 :- use_module(library(format), [format/2]).

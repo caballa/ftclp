@@ -1,0 +1,12 @@
+All this software is provided under the GNU LGPL and, in a few cases,
+GPL licenses.
+
+Ciao is in very active and continuous development since the early 90's
+by an international team, coordinated by CLIP group members at the
+Technical University of Madrid, the IMDEA Software Institute, and the
+University of New Mexico, USA. It builds on its predecessor, &-Prolog,
+developed between 1984 and the mid 90's at the University of Texas at
+Austin, USA, the Microelectronics and Technology Corporation, and the
+Technical University of Madrid.
+
+Ciao is free software.

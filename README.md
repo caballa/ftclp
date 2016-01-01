@@ -1,104 +1,87 @@
 [![Build Status](https://travis-ci.org/jfmc/ftclp.svg?branch=master)](https://travis-ci.org/jfmc/ftclp)
 
-# FTCLP
+# FTCLP #
 
-Interpreter for Constraint Logic Programming (CLP), called FTCLP 
-(Failure-based Tabled Constraint Logic Programs), that improves standard CLP evaluation 
-mechanism by getting rid of infinite loops and redundant sub-computations.
+Interpreter for Constraint Logic Programming (CLP), called FTCLP
+(Failure-based Tabled Constraint Logic Programs), that improves
+standard CLP evaluation mechanism by getting rid of infinite loops and
+redundant sub-computations.
 
-FTCLP is a solver for recursive CLP programs (aka Constrained Horn Clauses).
+FTCLP is a solver for recursive CLP programs (aka Constrained Horn
+Clauses).
 
-It is implemented using the Ciao Prolog system and the SMT solver MathSAT 5 for 
+It is implemented using the Ciao Prolog system and MathSAT 5 for
 checking satisfiability and generation of interpolants.
 
-## Background
-
-### Logic Programming based on Prolog's SLD evaluation mechanism
-
-SLD resolution is the common evaluation strategy in Prolog programs. 
-However, it may not be complete or efficient in presence of recursion. 
-For instance, for programs that implement the transitive closure of a graph SLD 
-may not terminate if the graph contain cycles. Another classical example is Fibonacci
-where the evaluation of the sub-goals with n-1 and n-2 (where n is the input) generates
-an exponential number of subgoals.
-
-### Tabled (Constraint) Logic Programming
-To tackle these issues, an alternative evaluation strategy calling Tabling was proposed
-by Tamaki, Sato, and D.S. Warren between 1986-1992. The main idea is to memoize the 
-answers of some subgoals and use these answers to reuse subsequent calls to these subgoals. 
-Tabling is currently available in most of the Prolog systems and has been successfully used 
-in many different applications.
-
-Tabled CLP is a natural extension of Tabling to Constraint Logic Programming. It was 
-proposed by P.Codognet in 1995. Although the main idea is the same, there are important differences 
-due to the domain of use. Tabled CLP makes explicit the requirement of the tabling execution on the 
-constraint domain. For instance, to detect when a more particular call can consume answers from a more 
-general one, it uses constraint entailment. And for determining the calling constraint for a tabled call,
-it needs to make use of constraint projection (i.e. existential quantifier elimination). The projection
-operation is a particularly onerous requirement. Many constraint domains have no projection operation
-(or weak projection only), and for those that do, the cost is often prohibitive.
-
-## Our Contribution
-
-FTCLP is a new concept of Tabled CLP for solving Constrained Horn clauses. Similarly to Tabled CLP, 
-FTCLP records certain derivations in order to prune further derivations. However, FTCLP only 
-learns from failed derivations. This allows it to compute Craig interpolants rather than constraint 
-projection for generation of reusing conditions. As a result, the technique can be used where projection
-is too expensive or does not exist. Moreover, it can get termination in cases where the use of projection
-cannot. FTCLP is based on this [paper] (http://www.clip.dia.fi.upm.es/~jorge/docs/ftclp.pdf)
-
-# Installation
-
-This guide is only for Linux OS and it has only been tested with Ubuntu 12.04/13.10 on a 64-bit machine.
-
-## Requirements
-
-If your OS is linux 64 bits, then you need to install the 32-bit libraries:
-
-For Ubuntu:
- ```sudo apt-get install ia32-libs libc6-i386 libc6-dev-i386 lib32gcc1 lib32stdc++6 g++-4.6-multilib lib32bz2-dev lib32z1-dev ```
-
-Also, you might need to add manually the symbolic link:
-
- ```ln -s /usr/lib32/libstdc++.so.6 /usr/lib32/libstdc++.so ```
-
-If you run the script ```install_gmp``` then you will need to install ```m4```. For Ubuntu:
-```sudo apt-get install m4```
-
-## Setup
-
- - ```export FTCLP_INSTALL=/home/jorge/ftclp ```
- - ```export PATH=${PATH}:${FTCLP_INSTALL}/bin ``` (optional)
- - ```make install```  to install any required third-party system (e.g., Ciao system).
- - ```make all``` to compile all prolog files and generate executable ```ftclp``` in the ```bin``` directory
+## Some background ##
  
+### Logic Programming based on Prolog's SLD evaluation mechanism ###
 
-## Troubleshooting
+SLD resolution is the common evaluation strategy in Prolog programs.
+However, it may not be complete or efficient in presence of recursion.
+For instance, for programs that implement the transitive closure of a
+graph SLD may not terminate if the graph contain cycles. Another
+classical example is Fibonacci where the evaluation of the sub-goals
+with n-1 and n-2 (where n is the input) generates an exponential
+number of subgoals.
 
-- If during ```make all```  you get an error like
-```"/usr/include/gmp.h:47:22: fatal error: gmp-i386.h: No such file or directory"```
-then, type the following commands:
+### Tabled (Constraint) Logic Programming ###
 
-  - ```sudo apt-get install apt-file``` 
-  - ```apt-file update```
-  - ```apt-file search stubs-32.h```
-  - ```lib32gmp-dev: /usr/include/gmp-i386.h```
-  - ```apt-get install lib32gmp-dev```
+To tackle these issues, an alternative evaluation strategy calling
+Tabling was proposed by Tamaki, Sato, and D.S. Warren between
+1986-1992. The main idea is to memoize the answers of some subgoals
+and use these answers to reuse subsequent calls to these subgoals.
+Tabling is currently available in most of the Prolog systems and has
+been successfully used in many different applications.
 
-- If the execution of ```ftclp``` fails because it cannot find GMP you
-might also try:
+Tabled CLP is a natural extension of Tabling to Constraint Logic
+Programming. It was proposed by P.Codognet in 1995. Although the main
+idea is the same, there are important differences due to the domain of
+use. Tabled CLP makes explicit the requirement of the tabling
+execution on the constraint domain. For instance, to detect when a
+more particular call can consume answers from a more general one, it
+uses constraint entailment. And for determining the calling constraint
+for a tabled call, it needs to make use of constraint projection
+(i.e. existential quantifier elimination). The projection operation is
+a particularly onerous requirement. Many constraint domains have no
+projection operation (or weak projection only), and for those that do,
+the cost is often prohibitive.
 
-```'ls /lib/libgmp* /usr/lib/libgmp* /usr/share/lib/libgmp* /usr/local/lib/libgmp* \
- /usr/local/share/lib/libgmp* /opt/lib/libgmp* /opt/gmp/libgmp* /opt/local/lib/libgmp* \
- /usr/lib/x86_64-linux-gnu/libgmp* /usr/lib/i386-linux-gnu/libgmp* '```
+## What is new? ##
 
-If you get a match, you can use that directory name as a value for
-```GMP_LIB``` in ```${FTCLP_INSTALL}/Makefile.conf```
+FTCLP is a new concept of Tabled CLP for solving Constrained Horn
+clauses. Similarly to Tabled CLP, FTCLP records certain derivations in
+order to prune further derivations. However, FTCLP only learns from
+failed derivations. This allows it to compute Craig interpolants
+rather than constraint projection for generation of reusing
+conditions. As a result, the technique can be used where projection is
+too expensive or does not exist. Moreover, it can get termination in
+cases where the use of projection cannot. FTCLP is based on this
+[paper] (http://www.clip.dia.fi.upm.es/~jorge/docs/ftclp.pdf)
 
+## Installation via CMake ##
 
-# Usage
+    mkdir build && cd build
+    cmake -DCMAKE_BUILD_TYPE=Release ..        # CMAKE_BUILD_TYPE is optional
+	cmake --build . --target ciao && cmake ..  # download/build Ciao prolog
+	cmake --build . --target msat && cmake ..  # download MathSAT binaries
+	cmake --build .                            # compile C files
+	cmake --build . --target ftclp             # build binary ftclp 
 
-```bin/ftclp -help```
+Note: do not try to load directly `ftclp.pl` from a `Ciao` shell
+because it will not compile. The code depends on several automatically
+generated configuration files and C libraries that can be only
+generated by CMake.
+
+## Licenses ##
+
+FTCLP is distributed under MIT license. See [LICENSE.txt](LICENSE.txt)
+for details. Read also [Ciao](LICENSE_Ciao.txt) and
+[MathSAT](LICENSE_MathSAT.txt) license conditions.
+
+## Usage ##
+
+```ftclp -help```
 
 ```
 Failure Tabled Constraint Logic Programming by Interpolation (FTCLP)
@@ -133,13 +116,15 @@ Failure Tabled Constraint Logic Programming by Interpolation (FTCLP)
    -scoped-intp        : generation of well scoped interpolants
 ```   
 
-## Common Usage Configurations
+### Common Usage Configurations ###
+
 - Standard CLP without tabling: run without options
 - Failure-Tabling CLP: run with options ```-clause-pruning -unscoped-intp```
 - Failure-Tabling CLP with special treatment for infinite derivations: run with options 
 ```-clause-pruning -scoped-intp -infinite-pruning```
 
-### Scoped vs Unscoped interpolants
+### Scoped vs Unscoped interpolants ###
+
 An interpolant is well scoped with respect to a head clause H (or a predicate P) if only contains 
 variables of H (P). Otherwise, we say it is an unscoped or out-of-scoped interpolant. Ideally, 
 we would like to have scoped interpolants because they can prune more derivations but they are 
@@ -149,15 +134,19 @@ The option ```-scoped-intp``` ensures that only scoped interpolants are computed
 The other option ```-unscoped-intp``` may produce unscoped interpolants which may reduce 
 the pruning capabilities although it's generally faster.
 
-##View Answers (Solutions)
-To see the answers (solutions) generated by the CLP program use the option ```-show-answers```. 
-Currently, the format of the answers is very limited. Current CLP systems dump the state of the
-solver and projected onto a set of variables of interest. Instead, we simply print the sequence 
-of executed clauses that led to a solution. A clause is denoted by p/n/k where p is the name 
-of the predicate functor, n is the arity of the predicate, and k is the number of the clause.
-The number of the clauses are assigned based on the order the clauses appear in the program.
+###View Answers (Solutions)###
 
-## Program annotations
+To see the answers (solutions) generated by the CLP program use the
+option ```-show-answers```.  Currently, the format of the answers is
+very limited. Current CLP systems dump the state of the solver and
+projected onto a set of variables of interest. Instead, we simply
+print the sequence of executed clauses that led to a solution. A
+clause is denoted by p/n/k where p is the name of the predicate
+functor, n is the arity of the predicate, and k is the number of the
+clause.  The number of the clauses are assigned based on the order the
+clauses appear in the program.
+
+## Program annotations ##
 
 The CLP programs can be annotated with the following directives:
 
@@ -206,41 +195,47 @@ Bibliography:
 
 1. Non-discriminating Arguments and Their Uses. H. Christiansen and J. P. Gallagher. ICLP'09.
 
-# Current Limitations
+## Limitations ##
 
-- FTCLP only proves invariant candidates generated by interpolation. Thus, any other technique 
-that aims at finding safe invariants (e.g., Abstract Interpretation) can help our tool. 
-Specially, ideas from abstract compilation could be very useful.
+- FTCLP only proves invariant candidates generated by
+interpolation. Thus, any other technique that aims at finding safe
+invariants (e.g., Abstract Interpretation) can help our tool.
 
-- FTCLP only generates interpolants from real and linear integer arithmetic theories. 
-Consideration of recursive datatypes such as lists is in our TODO list.
+- FTCLP only generates interpolants from real and linear integer
+arithmetic theories.  
 
-- FTCLP does not use any capability from the Tabled CLP system implemented in Ciao.
+- FTCLP does not use any capability from the Tabled CLP system
+  implemented in Ciao.
 
 - FTCLP only solves linear recursive Horn clauses.
 
 
-# Using FTCLP for proving verification conditions
+## Using FTCLP for proving verification conditions ##
 
-CLP (aka Constrained Horn Clauses, CHC) provides a suitable formalism for expressing veriﬁcation 
-conditions that guarantee the correctness of imperative, functional, or concurrent programs. 
-Since FTCLP is a solver for CHCs we can use it in order to prove whether a set of verification 
-conditions (VCs) holds.
+CLP (aka Constrained Horn Clauses, CHC) provides a suitable formalism
+for expressing veriﬁcation conditions that guarantee the correctness
+of imperative, functional, or concurrent programs.  Since FTCLP is a
+solver for CHCs we can use it in order to prove whether a set of
+verification conditions (VCs) holds.
 
-These VCs can come from safety or termination as well as from different programming languages. 
-Once we translated those to Constrained Horn clauses we can use directly FTCLP to prove them. 
-This is one of the key advantages of using CLP as intermediate language since we do not need 
-to implement different tools for different languages or properties. Moreover, since the use 
-of CLP as intermediate representation in verification tools is becoming more popular, it is 
-much easier to communicate FTCLP with other verifiers.
+These VCs can come from safety or termination as well as from
+different programming languages.  Once we translated those to
+Constrained Horn clauses we can use directly FTCLP to prove them.
+This is one of the key advantages of using CLP as intermediate
+language since we do not need to implement different tools for
+different languages or properties. Moreover, since the use of CLP as
+intermediate representation in verification tools is becoming more
+popular, it is much easier to communicate FTCLP with other verifiers.
 
-The VCs must be encoded in such way that they hold iff its corresponding CLP program has no solutions.
+The VCs must be encoded in such way that they hold iff its
+corresponding CLP program has no solutions.
 
-We provide a script called ```horn-prover``` in the ```bin``` directory that specializes FTCLP 
-(by choosing some suitable options) for proving verification conditions.
+We provide a script called ```horn-prover``` in the ```scripts```
+directory that specializes FTCLP (by choosing some suitable options)
+for proving verification conditions.
 
 
-## Usage
+### Usage ###
 
 ```
 horn_prover filename.pl -entry E [ <options> ]
@@ -253,7 +248,7 @@ options:
        -show-proof         write the proof tree in a .dot file
 ```
 
-## Examples
+### Examples ###
 
 Suppose the following C program fragment:
 
@@ -267,7 +262,8 @@ Suppose the following C program fragment:
     assert(y<=0);
 ```
 
-Next, we translate the above program into a set of CHCs using an encoding based on a small-step semantics form:
+Next, we translate the above program into a set of CHCs using an
+encoding based on a small-step semantics form:
 
 ```state(X1,...,Xn) :- C(X1,...,Xn,X1',...,Xn'), next_state(X1',...,Xn').```
 
@@ -288,17 +284,18 @@ l(X,Y,I,J):-
 err(_X,Y,I,J):- clp_meta([I .=. J, Y .>. 0]).
 ```
 
-First note that we have encoded the loop using the relation ```l/4```. 
-The first rule of ```l/4``` is recursive and corresponds to the body of the loop. 
-The second rule of ```l/4``` corresponds to the exit of the loop. 
-Note that the ```err/4``` relation encodes the safety property and it is the negation of 
-the condition that appears in the C ```assert```. 
-The initial state has been encoded within the relation ```prove/0``` before we call ```l/4```. 
-It should not been hard to see that the original C fragment is safe iff the relation ```prove/0``` 
-has no solutions.
+First note that we have encoded the loop using the relation ```l/4```.
+The first rule of ```l/4``` is recursive and corresponds to the body
+of the loop.  The second rule of ```l/4``` corresponds to the exit of
+the loop.  Note that the ```err/4``` relation encodes the safety
+property and it is the negation of the condition that appears in the C
+```assert```.  The initial state has been encoded within the relation
+```prove/0``` before we call ```l/4```.  It should not been hard to
+see that the original C fragment is safe iff the relation
+```prove/0``` has no solutions.
 
-Alternatively, we can encode the verification conditions originated form the above program 
-using Hoare-logic based encoding:
+Alternatively, we can encode the verification conditions originated
+form the above program using Hoare-logic based encoding:
 
 ```
 prove :- 
@@ -324,7 +321,7 @@ err(_X,Y,I,J):- clp_meta([Y .>. 0]).
 FTCLP reports no solutions with either the above small-step or Hoare-logic encodings 
 which means that the original C program is safe.
 
-## Grammar for Constraints
+### Grammar for Constraints ###
 
 The relation clp_meta/1 takes as its only argument a list (in Prolog format) of type Constraint. 
 The grammar for Constraint is defined as follows:
@@ -338,17 +335,7 @@ The grammar for Constraint is defined as follows:
 
 This is the standard format used in Constraint Logic Programming systems.
 
-## Program annotations
-All relations should be annotated via tabled/1 directives:
-
-```:- tabled(foo(_,num)).```
-
-Tells FTCLP that it should do tabling on ```foo/2```. Moreover, it tells FTCLP that the second argument 
-is a number and hence, it will model it using the theory of integer or real linear arithmetic, depending 
-on one of the horn-prover script options. The ```_``` symbol tells us that the argument should be 
-modelled with Herbrand logic and use Prolog unification on it.
-
-## Translation to SMTLIB2 format
+### Translation to SMTLIB2 format ###
 
 Our CLP notation can be translated in a straightforward manner to SMTLIB2 format. 
 E.g., the above program can be written in SMTLIB2 as follows:
@@ -371,13 +358,17 @@ E.g., the above program can be written in SMTLIB2 as follows:
 
 Just to be clear, a parser from SMTLIB2 is not currently implemented.
 
-## View Counterexamples
-Since VCs hold iff its corresponding CLP program has no solutions, if a solution is found then
-it means that the program is unsafe and the solution corresponds to a counterexample. We print 
-the sequence of executed clauses (separated by the dash - symbol) that led to a solution. 
-A clause is denoted by p/n/k where p is the name of the relation functor, n is the arity of 
-the relation, and k is the number of the clause. The number of the clauses are assigned based
-on the order in which the clauses appear in the program. This is an example of a counterexample:
+### View Counterexamples ###
+
+Since VCs hold iff its corresponding CLP program has no solutions, if
+a solution is found then it means that the program is unsafe and the
+solution corresponds to a counterexample. We print the sequence of
+executed clauses (separated by the dash - symbol) that led to a
+solution.  A clause is denoted by p/n/k where p is the name of the
+relation functor, n is the arity of the relation, and k is the number
+of the clause. The number of the clauses are assigned based on the
+order in which the clauses appear in the program. This is an example
+of a counterexample:
 
 ```Solution: prove/0/1-p/6/2-l/4/1-l/4/2-err/1/1```
 

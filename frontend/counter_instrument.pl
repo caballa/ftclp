@@ -11,7 +11,7 @@
 %  Ciao libraries
 :- use_module(library(read)).
 :- use_module(library(write)).
-:- use_module(library(filenames), [file_name_extension/3]).
+:- use_module(library(pathnames), [path_splitext/3]).
 :- use_module(library(lists),     [last/2]).
 :- use_module(library(assoc)).
 
@@ -44,7 +44,7 @@ counter_instrument(Ps, Procs, Dirs, InFile, OutFile):-
         % add_last_arg_in_rec_atom/6 invalidates Procs, Dirs,
         % RecPreds, and NewPs. Thus, they must be recomputed.
         add_last_arg_in_rec_atom(Procs,Dirs,RecPreds,NewPs,NewProcs,NewDirs),
-        % TODO/FIXME: for simplicity SCCs are computed twice!
+        % FIXME: SCCs are computed twice!
         recursive_preds(NewPs, NewProcs, NewRecPreds, SCCs),
         recursive_clauses(NewPs, NewProcs, RecCls),	
         find_backedges(NewPs, NewProcs, BackEdges),
@@ -52,7 +52,7 @@ counter_instrument(Ps, Procs, Dirs, InFile, OutFile):-
         compute_stable_map_pred_to_clauses(NewProcs, EmptyClsMap, ClsMap),
         instrument_rec_preds(NewPs,root,_,ClsMap,SCCs,NewRecPreds,RecCls,BackEdges,InstrCls),
         /* here write the transformed program into OutFile */		 
-        file_name_extension(InFile,Base,Extension),	
+        path_splitext(InFile,Base,Extension),	
         atom_concat(Base,'__counter_instr', Base0),
         atom_concat(Base0,Extension, OutFile),
         open(OutFile,write,Stream),	
@@ -204,7 +204,7 @@ add_last_arg_in_rec_atom(Procs, Dirs, RecPreds, NewPs, NewProcs, NewDirs):-
         update_directives(Dirs, RecPreds, NewDirs).
 
 % IMPORTANT: this predicate must be updated if more directives are
-% added in tclp_package.pl
+% added in ftclp_package.pl
 update_directives([],_,[]).
 update_directives([Dir|Dirs],RecPreds,[NewDir|NewDirs]):-
         update_directive(Dir, RecPreds, NewDir),

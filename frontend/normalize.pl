@@ -9,7 +9,7 @@
 %  Ciao libraries
 :- use_module(library(read)).
 :- use_module(library(write)).
-:- use_module(library(filenames), [file_name_extension/3]).
+:- use_module(library(pathnames), [path_splitext/3]).
 
 %------------------------------------------------------------------%
 % normalize(+InFile, -OutFile)
@@ -26,7 +26,7 @@ normalize(Prog, Dirs, InFile, OutFile):-
           % Here the program transformations
 	clauseTermElim(Prog, NormProg),
 	% Write to a file the transformed program
-	file_name_extension(InFile,Base,Extension),	
+	path_splitext(InFile,Base,Extension),	
 	atom_concat(Base,'__norm', Base0),
 	atom_concat(Base0,Extension, OutFile),
 	open(OutFile,write,Stream),	

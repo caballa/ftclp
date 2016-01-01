@@ -15,7 +15,6 @@
 
 % Ciao libraries
 :- use_module(library(format), [format/2]).
-:- use_module(library(atom2term)).
 :- use_module(library(system), [delete_file/1]).
 
 % Output derivation tree in dot format
@@ -187,10 +186,6 @@ process_user_options([max_unroll(A)| Xs], [max_unroll(N)|Ys], T, F, D):-
 	process_user_options(Xs,Ys, T, F, D).
 process_user_options([entry(A)| Xs], Ys, T, F, D):-
 	!,
-	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
-	%%% dirty hook to convert an atom into a term because
-	%%% atom2term(A,T) does not work as I expected.
-	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
 	TmpFile = 'tmp___xxx',
 	open(TmpFile,write,Out),
 	write(Out, A),

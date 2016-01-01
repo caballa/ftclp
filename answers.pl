@@ -34,7 +34,7 @@
 	]).
 
 %  Own libraries
-:- use_module('trie/ciao_trie').
+:- use_module('trie_C/ciao_trie').
 :- use_module(solver).
 :- use_module(debug).
 :- use_module(counters).
@@ -47,7 +47,8 @@
 :- use_module(library(lists)    , [append/3]).
 
 % To use clp_meta/1 from Ciao clpr library
-:-use_package(clpr).
+%:-use_package(clpr).
+:- use_module(library(clpr/clpr_meta)).
 
 %------------------------------------------------------------------------%
 % Notes: 
@@ -234,7 +235,8 @@ execute_path_aux([constraints(Cs,_)| Goals], Suffix, EndSuffix):-
 	!,                              % This cut is important
 
 	% format("Executing constraints ~q ... \n",[Cs]),
-	clp_meta(Cs),
+	% clp_meta(Cs),
+	clpr_meta(Cs),
 	% format("\tSAT\n",[]),
 	execute_path_aux(Goals, Suffix, EndSuffix).
 execute_path_aux([builtin(Builtin,_,Module)| Goals], Suffix, EndSuffix):- 

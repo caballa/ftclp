@@ -45,12 +45,12 @@
 	 mark_complete_clause/1,
 	 mark_complete_predicate/4,
 	 cache_gen_disjunctive_interpolants/4,
-	 % for tclp (handle of cycles)
+	 % for ftclp (handle of cycles)
 	 lookup_intp_clause_tables/6,
 	 lookup_intp_pred_table/4,
 	 delete_clause_intp_table/1,
  
-	 % for tclp (user output)
+	 % for ftclp (user output)
 	 dump_interpolants/2,
 	 % for debugging in interpolation.pl
 	 debug_print_intp_table/1
@@ -66,17 +66,17 @@
 	                         print_term_with_attribute/1,
 			     print_term_with_attribute/2]).
 :- use_module(interpolation).
-:- use_module(tclp              , [get_map_node_to_unique_id/4, is_fake_false_id/1]).
+:- use_module(ftclp             , [get_map_node_to_unique_id/4, is_fake_false_id/1]).
 :- use_module('analysis/discriminants').
 :- use_module(timer).
-:- use_module('frontend/tclp_tr', [get_num_of_clauses/2]).
+:- use_module('frontend/ftclp_tr', [get_num_of_clauses/2]).
 %  Ciao libraries
 :- use_module(library(terms)    , [atom_concat/2]).
 :- use_module(library(format)   , [format/2]).
 :- use_module(library(write)).
 :- use_module(library(lists)    , [length/2]).
 :- use_module(library(aggregates), [findall/3]).
-:- use_module(library(filenames), [file_name_extension/3]). 
+:- use_module(library(pathnames), [path_splitext/3]). 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % '$intp_table'(+Goal,+ClId,+NodeId,?Itp,?Node,?ClPrefix,?PredPrefix)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -912,7 +912,7 @@ dump_interpolants(InFile, Solver):-
           is_enabled_option(dump_interpolants),
           is_enabled_option(pred_subsumption),
           !,
-	file_name_extension(InFile,Base,_Extension),	
+	path_splitext(InFile,Base,_Extension),	
 	atom_concat(Base,'.pred.intp', OutFile),
 	open(OutFile,write,Stream),	
 	write(Stream, '=================================='), nl(Stream),
@@ -925,7 +925,7 @@ dump_interpolants(InFile, Solver):-
           is_enabled_option(scoped_interpolation),
           !,
 	% we only output the table of well-scoped interpolants.
-	file_name_extension(InFile,Base,_Extension),	
+	path_splitext(InFile,Base,_Extension),	
 	atom_concat(Base,'.clause.intp', OutFile),
 	open(OutFile,write,Stream),	
 	write(Stream, '=================================='), nl(Stream),

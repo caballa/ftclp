@@ -19,6 +19,7 @@
 %  Own libraries
 :- use_module(debug).
 %  Ciao libraries
+:- use_module(engine(attributes)).
 :- use_module(library(assoc)  , [empty_assoc/1, put_assoc/4, get_assoc/3]).
 
  
