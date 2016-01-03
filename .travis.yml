@@ -6,7 +6,7 @@ compiler:
 before_install:
   - echo $LANG
   - echo $LC_ALL
-  - if [ $TRAVIS_OS_NAME == linux ]; then sudo add-apt-repository ppa:kalakris/cmake; fi
+  - if [ $TRAVIS_OS_NAME == linux ]; then sudo add-apt-repository --yes ppa:kalakris/cmake; fi
   - if [ $TRAVIS_OS_NAME == linux ]; then sudo apt-get update; fi
   - if [ $TRAVIS_OS_NAME == linux ]; then sudo apt-get install cmake; fi # Update cmake
   - if [ $CC == clang ] && [ $TRAVIS_OS_NAME == linux ]; then sudo apt-get update && sudo apt-get install -y llvm-3.4 llvm-3.4-dev; fi
