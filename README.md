@@ -1,6 +1,6 @@
 [![Build Status](https://travis-ci.org/jfmc/ftclp.svg?branch=master)](https://travis-ci.org/jfmc/ftclp)
 
-# FTCLP
+# FTCLP #
 
 Interpreter for Constraint Logic Programming (CLP), called FTCLP 
 (Failure-based Tabled Constraint Logic Programs), that improves standard CLP evaluation 
@@ -11,9 +11,9 @@ FTCLP is a solver for recursive CLP programs (aka Constrained Horn Clauses).
 It is implemented using the Ciao Prolog system and the SMT solver MathSAT 5 for 
 checking satisfiability and generation of interpolants.
 
-## Background
+## Background ##
 
-### Logic Programming based on Prolog's SLD evaluation mechanism
+### Logic Programming based on Prolog's SLD evaluation mechanism ###
 
 SLD resolution is the common evaluation strategy in Prolog programs. 
 However, it may not be complete or efficient in presence of recursion. 
@@ -22,7 +22,7 @@ may not terminate if the graph contain cycles. Another classical example is Fibo
 where the evaluation of the sub-goals with n-1 and n-2 (where n is the input) generates
 an exponential number of subgoals.
 
-### Tabled (Constraint) Logic Programming
+### Tabled (Constraint) Logic Programming ###
 To tackle these issues, an alternative evaluation strategy calling Tabling was proposed
 by Tamaki, Sato, and D.S. Warren between 1986-1992. The main idea is to memoize the 
 answers of some subgoals and use these answers to reuse subsequent calls to these subgoals. 
@@ -38,7 +38,7 @@ it needs to make use of constraint projection (i.e. existential quantifier elimi
 operation is a particularly onerous requirement. Many constraint domains have no projection operation
 (or weak projection only), and for those that do, the cost is often prohibitive.
 
-## Our Contribution
+## Our Contribution ##
 
 FTCLP is a new concept of Tabled CLP for solving Constrained Horn clauses. Similarly to Tabled CLP, 
 FTCLP records certain derivations in order to prune further derivations. However, FTCLP only 
@@ -47,11 +47,11 @@ projection for generation of reusing conditions. As a result, the technique can 
 is too expensive or does not exist. Moreover, it can get termination in cases where the use of projection
 cannot. FTCLP is based on this [paper] (http://www.clip.dia.fi.upm.es/~jorge/docs/ftclp.pdf)
 
-# Installation
+# Installation #
 
 This guide is only for Linux OS and it has only been tested with Ubuntu 12.04/13.10 on a 64-bit machine.
 
-## Requirements
+## Requirements ##
 
 If your OS is linux 64 bits, then you need to install the 32-bit libraries:
 
@@ -65,7 +65,7 @@ Also, you might need to add manually the symbolic link:
 If you run the script ```install_gmp``` then you will need to install ```m4```. For Ubuntu:
 ```sudo apt-get install m4```
 
-## Setup
+## Setup ##
 
  - ```export FTCLP_INSTALL=/home/jorge/ftclp ```
  - ```export PATH=${PATH}:${FTCLP_INSTALL}/bin ``` (optional)
@@ -73,7 +73,7 @@ If you run the script ```install_gmp``` then you will need to install ```m4```. 
  - ```make all``` to compile all prolog files and generate executable ```ftclp``` in the ```bin``` directory
  
 
-## Troubleshooting
+## Troubleshooting ##
 
 - If during ```make all```  you get an error like
 ```"/usr/include/gmp.h:47:22: fatal error: gmp-i386.h: No such file or directory"```
@@ -88,15 +88,15 @@ then, type the following commands:
 - If the execution of ```ftclp``` fails because it cannot find GMP you
 might also try:
 
-```'ls /lib/libgmp* /usr/lib/libgmp* /usr/share/lib/libgmp* /usr/local/lib/libgmp* \
- /usr/local/share/lib/libgmp* /opt/lib/libgmp* /opt/gmp/libgmp* /opt/local/lib/libgmp* \
- /usr/lib/x86_64-linux-gnu/libgmp* /usr/lib/i386-linux-gnu/libgmp* '```
+    ls /lib/libgmp* /usr/lib/libgmp* /usr/share/lib/libgmp* /usr/local/lib/libgmp* \
+    /usr/local/share/lib/libgmp* /opt/lib/libgmp* /opt/gmp/libgmp* /opt/local/lib/libgmp* \
+    /usr/lib/x86_64-linux-gnu/libgmp* /usr/lib/i386-linux-gnu/libgmp* 3
 
 If you get a match, you can use that directory name as a value for
 ```GMP_LIB``` in ```${FTCLP_INSTALL}/Makefile.conf```
 
 
-# Usage
+# Usage #
 
 ```bin/ftclp -help```
 
@@ -133,13 +133,14 @@ Failure Tabled Constraint Logic Programming by Interpolation (FTCLP)
    -scoped-intp        : generation of well scoped interpolants
 ```   
 
-## Common Usage Configurations
+## Common Usage Configurations ##
+
 - Standard CLP without tabling: run without options
 - Failure-Tabling CLP: run with options ```-clause-pruning -unscoped-intp```
 - Failure-Tabling CLP with special treatment for infinite derivations: run with options 
 ```-clause-pruning -scoped-intp -infinite-pruning```
 
-### Scoped vs Unscoped interpolants
+### Scoped vs Unscoped interpolants ###
 An interpolant is well scoped with respect to a head clause H (or a predicate P) if only contains 
 variables of H (P). Otherwise, we say it is an unscoped or out-of-scoped interpolant. Ideally, 
 we would like to have scoped interpolants because they can prune more derivations but they are 
@@ -149,7 +150,7 @@ The option ```-scoped-intp``` ensures that only scoped interpolants are computed
 The other option ```-unscoped-intp``` may produce unscoped interpolants which may reduce 
 the pruning capabilities although it's generally faster.
 
-##View Answers (Solutions)
+## View Answers (Solutions) ##
 To see the answers (solutions) generated by the CLP program use the option ```-show-answers```. 
 Currently, the format of the answers is very limited. Current CLP systems dump the state of the
 solver and projected onto a set of variables of interest. Instead, we simply print the sequence 
@@ -157,7 +158,7 @@ of executed clauses that led to a solution. A clause is denoted by p/n/k where p
 of the predicate functor, n is the arity of the predicate, and k is the number of the clause.
 The number of the clauses are assigned based on the order the clauses appear in the program.
 
-## Program annotations
+## Program annotations ##
 
 The CLP programs can be annotated with the following directives:
 
@@ -206,7 +207,7 @@ Bibliography:
 
 1. Non-discriminating Arguments and Their Uses. H. Christiansen and J. P. Gallagher. ICLP'09.
 
-# Current Limitations
+# Current Limitations #
 
 - FTCLP only proves invariant candidates generated by interpolation. Thus, any other technique 
 that aims at finding safe invariants (e.g., Abstract Interpretation) can help our tool. 
@@ -220,7 +221,7 @@ Consideration of recursive datatypes such as lists is in our TODO list.
 - FTCLP only solves linear recursive Horn clauses.
 
 
-# Using FTCLP for proving verification conditions
+# Using FTCLP for proving verification conditions #
 
 CLP (aka Constrained Horn Clauses, CHC) provides a suitable formalism for expressing veriﬁcation 
 conditions that guarantee the correctness of imperative, functional, or concurrent programs. 
@@ -240,7 +241,7 @@ We provide a script called ```horn-prover``` in the ```bin``` directory that spe
 (by choosing some suitable options) for proving verification conditions.
 
 
-## Usage
+## Usage ##
 
 ```
 horn_prover filename.pl -entry E [ <options> ]
@@ -253,8 +254,8 @@ options:
        -show-proof         write the proof tree in a .dot file
 ```
 
-## Examples
-
+## Examples ##
+ 
 Suppose the following C program fragment:
 
 ```
@@ -324,7 +325,7 @@ err(_X,Y,I,J):- clp_meta([Y .>. 0]).
 FTCLP reports no solutions with either the above small-step or Hoare-logic encodings 
 which means that the original C program is safe.
 
-## Grammar for Constraints
+## Grammar for Constraints ##
 
 The relation clp_meta/1 takes as its only argument a list (in Prolog format) of type Constraint. 
 The grammar for Constraint is defined as follows:
@@ -338,7 +339,8 @@ The grammar for Constraint is defined as follows:
 
 This is the standard format used in Constraint Logic Programming systems.
 
-## Program annotations
+## Program annotations ##
+
 All relations should be annotated via tabled/1 directives:
 
 ```:- tabled(foo(_,num)).```
@@ -348,7 +350,7 @@ is a number and hence, it will model it using the theory of integer or real line
 on one of the horn-prover script options. The ```_``` symbol tells us that the argument should be 
 modelled with Herbrand logic and use Prolog unification on it.
 
-## Translation to SMTLIB2 format
+## Translation to SMTLIB2 format ##
 
 Our CLP notation can be translated in a straightforward manner to SMTLIB2 format. 
 E.g., the above program can be written in SMTLIB2 as follows:
@@ -371,7 +373,8 @@ E.g., the above program can be written in SMTLIB2 as follows:
 
 Just to be clear, a parser from SMTLIB2 is not currently implemented.
 
-## View Counterexamples
+## View Counterexamples ##
+
 Since VCs hold iff its corresponding CLP program has no solutions, if a solution is found then
 it means that the program is unsafe and the solution corresponds to a counterexample. We print 
 the sequence of executed clauses (separated by the dash - symbol) that led to a solution. 
